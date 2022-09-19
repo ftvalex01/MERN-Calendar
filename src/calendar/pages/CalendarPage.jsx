@@ -4,7 +4,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { useState } from 'react';
 
 
-import { NavBar } from "../";
+import { NavBar,CalendarEvent } from "../";
 import { localizer , getMessagesES  } from '../../helpers';
 
 
@@ -24,6 +24,7 @@ const  events = [{
 
 export const CalendarPage = () => {
 
+  const [lastView, setlastView] = useState(localStorage.getItem('lastView') || 'month')
   const [lenguage,setLenguage] = useState(false);
   
   const onChangeLenguage = () =>{
@@ -37,9 +38,28 @@ export const CalendarPage = () => {
   }
 
   const eventStyleGetter = (event,start,end,isSelected) => {
-      console.log({event,start,end,isSelected})
+      const style ={
+        backgroundColor:'#347CF7',
+        borderRadius:'0px',
+        opacity:0.8,
+        color: 'white',
+      }
+      return {
+        style
+      }
   }
 
+  const onDoubleClick = (event)=>{
+    console.log({doubleClick:event})
+  }
+  const onSelect = (event)=>{
+    console.log({click:event})
+  }
+  const onViewChange = (event)=>{
+    localStorage.setItem('lastView',event)
+  }
+ 
+ 
   return (
     <>
       <NavBar onChangeLenguage={onChangeLenguage}/>
@@ -47,11 +67,18 @@ export const CalendarPage = () => {
       culture={lenguage && 'es'}
       localizer={localizer}
       events={events}
+      defaultView={lastView}
       startAccessor="start"
       endAccessor="end"
       style={{ height: 500 }}
       messages={lenguage && getMessagesES()}
-      eventPropGetter={eventStyleGetter()}
+      eventPropGetter={eventStyleGetter}
+      components={{
+        event: CalendarEvent
+      }}
+      onDoubleClickEvent={onDoubleClick}
+      onSelectEvent={onSelect}
+      onView={onViewChange}
     />
     </>
   )

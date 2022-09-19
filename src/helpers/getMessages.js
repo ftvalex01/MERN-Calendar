@@ -12,7 +12,6 @@ export const getMessagesES = ()=>{
         time:'Hora',
         event:'Evento',
         noEventsInRange:'No hay eventos en este rango',
-        changeLenguage:'cambiar idioma',
         showMore: total => `+ Ver más(${total})`
     }
 }
